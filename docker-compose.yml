@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  database:
+    image: postgres
+    container_name: desafio_test_unit_app
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=fin_api
+    volumes:
+      - pgdata:/data/postgres
+
+  app:
+    build: .
+    container_name: desafio_test_unit_bd
+    restart: always
+    ports:
+      - 3333:3333
+      - 9229:9229
+    volumes:
+      - .:/home/abmael/Projetos
+    links: 
+      - database
+    depends_on:
+      - database
+      
+    
+volumes:
+  pgdata:
+    driver: local
